@@ -5,7 +5,9 @@ const urlsToCache = [
   "./script.js",
   "./manifest.json",
   "./icons/icon-192x192.png",
-  "./icons/icon-512x512.png"
+  "./icons/icon-512x512.png",
+  "./icons/apple-touch-icon.png",
+  "./icons/favicon.ico"
 ];
 
 self.addEventListener("install", event => {
@@ -38,3 +40,4 @@ self.addEventListener("activate", event => {
     })
   );
 });
+」
