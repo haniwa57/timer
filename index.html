@@ -30,7 +30,7 @@
       background: transparent;
       color: white;
       border: none;
-      font-size: 24px;
+      font-size: 36px;
       margin: 0 10px;
       text-align: center;
       width: 80px;
@@ -44,7 +44,7 @@
     button {
       background-color: white;
       color: black;
-      font-size: 16px;
+      font-size: 20px;
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
@@ -56,24 +56,40 @@
       background-color: gray;
     }
 
+    .button-container {
+      display: flex;
+      gap: 10px;
+    }
+
     .timer-display {
-      font-size: 48px;
+      font-size: 64px;
       margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
   <div class="time-picker">
-    <input id="hours" class="picker" type="number" min="0" max="23" value="0" readonly> <span>時間</span>
-    <input id="minutes" class="picker" type="number" min="0" max="59" value="0" readonly> <span>分</span>
-    <input id="seconds" class="picker" type="number" min="0" max="59" value="0" readonly> <span>秒</span>
+    <select id="hours" class="picker">
+      ${Array.from({ length: 24 }, (_, i) => `<option value="${i}">${i}</option>`).join('')}
+    </select>
+    <span>時間</span>
+    <select id="minutes" class="picker">
+      ${Array.from({ length: 60 }, (_, i) => `<option value="${i}">${i}</option>`).join('')}
+    </select>
+    <span>分</span>
+    <select id="seconds" class="picker">
+      ${Array.from({ length: 60 }, (_, i) => `<option value="${i}">${i}</option>`).join('')}
+    </select>
+    <span>秒</span>
   </div>
 
   <div class="timer-display">00:00:00</div>
 
-  <button id="start-btn">スタート</button>
-  <button id="stop-btn" style="display: none;">ストップ</button>
-  <button id="reset-btn">リセット</button>
+  <div class="button-container">
+    <button id="start-btn">スタート</button>
+    <button id="stop-btn" style="display: none;">ストップ</button>
+    <button id="reset-btn">リセット</button>
+  </div>
 
   <script>
     const hoursInput = document.getElementById('hours');
