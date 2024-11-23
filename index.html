@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ネイティブ風タイマー</title>
+  <title>タイマー</title>
   <style>
     body {
       margin: 0;
@@ -44,7 +44,7 @@
     button {
       background-color: white;
       color: black;
-      font-size: 20px;
+      font-size: 24px;
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
@@ -70,15 +70,15 @@
 <body>
   <div class="time-picker">
     <select id="hours" class="picker">
-      ${Array.from({ length: 24 }, (_, i) => `<option value="${i}">${i}</option>`).join('')}
+      <!-- Options dynamically generated -->
     </select>
     <span>時間</span>
     <select id="minutes" class="picker">
-      ${Array.from({ length: 60 }, (_, i) => `<option value="${i}">${i}</option>`).join('')}
+      <!-- Options dynamically generated -->
     </select>
     <span>分</span>
     <select id="seconds" class="picker">
-      ${Array.from({ length: 60 }, (_, i) => `<option value="${i}">${i}</option>`).join('')}
+      <!-- Options dynamically generated -->
     </select>
     <span>秒</span>
   </div>
@@ -111,6 +111,15 @@
 
     function updateDisplay(h, m, s) {
       timerDisplay.textContent = `${formatTime(h)}:${formatTime(m)}:${formatTime(s)}`;
+    }
+
+    function populatePicker(picker, max) {
+      for (let i = 0; i <= max; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        picker.appendChild(option);
+      }
     }
 
     function startCountdown() {
@@ -191,7 +200,10 @@
     stopBtn.addEventListener('click', stopTimer);
     resetBtn.addEventListener('click', resetTimer);
 
-    // 初期表示
+    populatePicker(hoursInput, 23);
+    populatePicker(minutesInput, 59);
+    populatePicker(secondsInput, 59);
+
     updateDisplay(0, 0, 0);
   </script>
 </body>
