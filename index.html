@@ -64,14 +64,15 @@
 </head>
 <body>
   <div class="time-picker">
-    <input id="hours" class="picker" type="number" min="0" max="23" value="0"> <span>時間</span>
-    <input id="minutes" class="picker" type="number" min="0" max="59" value="0"> <span>分</span>
-    <input id="seconds" class="picker" type="number" min="0" max="59" value="0"> <span>秒</span>
+    <input id="hours" class="picker" type="number" min="0" max="23" value="0" readonly> <span>時間</span>
+    <input id="minutes" class="picker" type="number" min="0" max="59" value="0" readonly> <span>分</span>
+    <input id="seconds" class="picker" type="number" min="0" max="59" value="0" readonly> <span>秒</span>
   </div>
 
   <div class="timer-display">00:00:00</div>
 
   <button id="start-btn">スタート</button>
+  <button id="stop-btn" style="display: none;">ストップ</button>
   <button id="reset-btn">リセット</button>
 
   <script>
@@ -80,9 +81,13 @@
     const secondsInput = document.getElementById('seconds');
     const timerDisplay = document.querySelector('.timer-display');
     const startBtn = document.getElementById('start-btn');
+    const stopBtn = document.getElementById('stop-btn');
     const resetBtn = document.getElementById('reset-btn');
 
     let countdown;
+    let stopwatch;
+    let isStopwatch = false;
+    let elapsedTime = 0;
 
     function formatTime(num) {
       return String(num).padStart(2, '0');
@@ -100,7 +105,8 @@
       let totalSeconds = hours * 3600 + minutes * 60 + seconds;
 
       if (totalSeconds <= 0) {
-        alert('時間を設定してください');
+        isStopwatch = true;
+        startStopwatch();
         return;
       }
 
@@ -120,17 +126,53 @@
 
         updateDisplay(h, m, s);
       }, 1000);
+
+      startBtn.style.display = 'none';
+      stopBtn.style.display = 'inline-block';
+    }
+
+    function startStopwatch() {
+      clearInterval(stopwatch);
+
+      stopwatch = setInterval(() => {
+        elapsedTime++;
+        const h = Math.floor(elapsedTime / 3600);
+        const m = Math.floor((elapsedTime % 3600) / 60);
+        const s = elapsedTime % 60;
+
+        updateDisplay(h, m, s);
+      }, 1000);
+
+      startBtn.style.display = 'none';
+      stopBtn.style.display = 'inline-block';
+    }
+
+    function stopTimer() {
+      if (isStopwatch) {
+        clearInterval(stopwatch);
+      } else {
+        clearInterval(countdown);
+      }
+
+      startBtn.style.display = 'inline-block';
+      stopBtn.style.display = 'none';
     }
 
     function resetTimer() {
       clearInterval(countdown);
+      clearInterval(stopwatch);
       updateDisplay(0, 0, 0);
       hoursInput.value = 0;
       minutesInput.value = 0;
       secondsInput.value = 0;
+      elapsedTime = 0;
+      isStopwatch = false;
+      startBtn.style.display = 'inline-block';
+      stopBtn.style.display = 'none';
     }
 
     startBtn.addEventListener('click', startCountdown);
+    stopBtn.addEventListener('click', stopTimer);
     resetBtn.addEventListener('click', resetTimer);
 
     // 初期表示
