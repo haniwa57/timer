@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="black">
   <title>タイマー</title>
   <style>
     body {
@@ -15,6 +16,8 @@
       align-items: center;
       height: 100vh;
       flex-direction: column;
+      font-size: 24px;
+      overflow: hidden;
     }
 
     .time-picker {
@@ -30,7 +33,7 @@
       background: transparent;
       color: white;
       border: none;
-      font-size: 36px;
+      font-size: 48px;
       margin: 0 10px;
       text-align: center;
       width: 80px;
@@ -62,7 +65,7 @@
     }
 
     .timer-display {
-      font-size: 64px;
+      font-size: 72px;
       margin-bottom: 20px;
     }
   </style>
@@ -70,15 +73,15 @@
 <body>
   <div class="time-picker">
     <select id="hours" class="picker">
-      <!-- Options dynamically generated -->
+      ${Array.from({ length: 24 }, (_, i) => `<option value="${i}">${i}</option>`).join('')}
     </select>
     <span>時間</span>
     <select id="minutes" class="picker">
-      <!-- Options dynamically generated -->
+      ${Array.from({ length: 60 }, (_, i) => `<option value="${i}">${i}</option>`).join('')}
     </select>
     <span>分</span>
     <select id="seconds" class="picker">
-      <!-- Options dynamically generated -->
+      ${Array.from({ length: 60 }, (_, i) => `<option value="${i}">${i}</option>`).join('')}
     </select>
     <span>秒</span>
   </div>
@@ -113,12 +116,14 @@
       timerDisplay.textContent = `${formatTime(h)}:${formatTime(m)}:${formatTime(s)}`;
     }
 
-    function populatePicker(picker, max) {
-      for (let i = 0; i <= max; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = i;
-        picker.appendChild(option);
+    async function sendNotification(message) {
+      if (Notification.permission === 'granted') {
+        new Notification(message);
+      } else if (Notification.permission !== 'denied') {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          new Notification(message);
+        }
       }
     }
 
@@ -140,7 +145,7 @@
       countdown = setInterval(() => {
         if (totalSeconds <= 0) {
           clearInterval(countdown);
-          alert('タイマーが終了しました！');
+          sendNotification('タイマーが終了しました！');
           return;
         }
 
@@ -200,10 +205,13 @@
     stopBtn.addEventListener('click', stopTimer);
     resetBtn.addEventListener('click', resetTimer);
 
-    populatePicker(hoursInput, 23);
-    populatePicker(minutesInput, 59);
-    populatePicker(secondsInput, 59);
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').then(() => {
+        console.log('Service Worker Registered');
+      });
+    }
 
+    // 初期表示
     updateDisplay(0, 0, 0);
   </script>
 </body>
