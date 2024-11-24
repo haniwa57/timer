@@ -1,7 +1,7 @@
 {
   "name": "タイマーアプリ",
   "short_name": "タイマー",
-  "description": "カウントダウンとストップウォッチ機能を備えたタイマーアプリ",
+  "description": "カウントダウンとストップウォッチ機能",
   "icons": [
     {
       "src": "/icon-192.png",
