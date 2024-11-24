@@ -4,10 +4,8 @@ const urlsToCache = [
   "./style.css",
   "./script.js",
   "./manifest.json",
-  "./icons/icon-192x192.png",
-  "./icons/icon-512x512.png",
-  "./icons/apple-touch-icon.png",
-  "./icons/favicon.ico"
+  "./icon-192.png",
+  "./icon-512.png"
 ];
 
 self.addEventListener("install", event => {
@@ -27,12 +25,11 @@ self.addEventListener("fetch", event => {
 });
 
 self.addEventListener("activate", event => {
-  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          if (!cacheWhitelist.includes(cacheName)) {
+          if (cacheName !== CACHE_NAME) {
             return caches.delete(cacheName);
           }
         })
@@ -40,4 +37,3 @@ self.addEventListener("activate", event => {
     })
   );
 });
-」
