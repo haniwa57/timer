@@ -1,31 +1,21 @@
 {
   "name": "タイマーアプリ",
   "short_name": "タイマー",
-  "description": "カウントダウンとストップウォッチを備えたウェブタイマーアプリ",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "description": "カウントダウンとストップウォッチ機能を備えたタイマーアプリ",
   "icons": [
     {
-      "src": "./icons/icon-192x192.png",
+      "src": "/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "./icons/icon-512x512.png",
+      "src": "/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
-    },
-    {
-      "src": "./icons/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png"
-    },
-    {
-      "src": "./icons/favicon.ico",
-      "sizes": "48x48 72x72 96x96 144x144 192x192",
-      "type": "image/x-icon"
     }
-  ]
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000"
 }
