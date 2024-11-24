@@ -72,17 +72,11 @@
 </head>
 <body>
   <div class="time-picker">
-    <select id="hours" class="picker">
-      ${Array.from({ length: 24 }, (_, i) => `<option value="${i}">${i}</option>`).join('')}
-    </select>
+    <select id="hours" class="picker"></select>
     <span>時間</span>
-    <select id="minutes" class="picker">
-      ${Array.from({ length: 60 }, (_, i) => `<option value="${i}">${i}</option>`).join('')}
-    </select>
+    <select id="minutes" class="picker"></select>
     <span>分</span>
-    <select id="seconds" class="picker">
-      ${Array.from({ length: 60 }, (_, i) => `<option value="${i}">${i}</option>`).join('')}
-    </select>
+    <select id="seconds" class="picker"></select>
     <span>秒</span>
   </div>
 
@@ -125,10 +119,29 @@
       }
     }
 
+    function populateTimeOptions() {
+      for (let i = 0; i < 24; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        hoursInput.appendChild(option);
+      }
+
+      for (let i = 0; i < 60; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        minutesInput.appendChild(option);
+
+        const optionClone = option.cloneNode(true);
+        secondsInput.appendChild(optionClone);
+      }
+    }
+
     function startCountdown() {
-      const hours = parseInt(hoursInput.value, 10);
-      const minutes = parseInt(minutesInput.value, 10);
-      const seconds = parseInt(secondsInput.value, 10);
+      const hours = parseInt(hoursInput.value, 10) || 0;
+      const minutes = parseInt(minutesInput.value, 10) || 0;
+      const seconds = parseInt(secondsInput.value, 10) || 0;
 
       let totalSeconds = hours * 3600 + minutes * 60 + seconds;
 
@@ -220,6 +233,7 @@
       });
     }
 
+    populateTimeOptions();
     updateDisplay(0, 0, 0);
   </script>
 </body>
