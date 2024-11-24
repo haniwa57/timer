@@ -110,15 +110,6 @@
       timerDisplay.textContent = `${formatTime(h)}:${formatTime(m)}:${formatTime(s)}`;
     }
 
-    function notifyUser() {
-      if (Notification.permission === 'granted') {
-        new Notification('タイマー終了', {
-          body: 'カウントダウンが終了しました！',
-          icon: './icons/icon-192x192.png'
-        });
-      }
-    }
-
     function populateTimeOptions() {
       for (let i = 0; i < 24; i++) {
         const option = document.createElement('option');
@@ -157,7 +148,6 @@
         if (totalSeconds <= 0) {
           clearInterval(countdown);
           alert('タイマーが終了しました！');
-          notifyUser();
           startBtn.style.display = 'inline-block';
           stopBtn.style.display = 'none';
           return;
@@ -218,22 +208,6 @@
     startBtn.addEventListener('click', startCountdown);
     stopBtn.addEventListener('click', stopTimer);
     resetBtn.addEventListener('click', resetTimer);
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js').then(() => {
-        console.log('Service Worker registered successfully.');
-      }).catch(error => {
-        console.error('Service Worker registration failed:', error);
-      });
-    }
-
-    if ('Notification' in window && Notification.permission !== 'granted') {
-      Notification.requestPermission().then(permission => {
-        if (permission === 'granted') {
-          console.log('Notification permission granted.');
-        }
-      });
-    }
 
     populateTimeOptions();
     updateDisplay(0, 0, 0);
